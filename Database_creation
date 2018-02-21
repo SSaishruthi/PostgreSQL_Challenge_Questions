@@ -1,0 +1,164 @@
+1. Create Simple Table
+   
+   CREATE TABLE account(
+    user_id serial PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    email VARCHAR(355) UNIQUE NOT NULL,
+    created_on TIMESTAMP NOT NULL,
+    last_login TIMESTAMP NOT NULL
+    );
+    
+
+2. Additing table constraint
+
+   CREATE TABLE account_role(
+   user_id integer NOT NULL,
+   role_id integer NOT NULL,
+   grant_date TIMESTAMP without time_zone,
+   PRIMARY KEY( user_id, role_id)
+	
+   CONSTRAINT account_role_role_id_fkey FOREIGN KEY (role_id)
+      REFERENCES role (role_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+	
+   CONSTRAINT account_role_user_id_fkey FOREIGN KEY (user_id)
+      REFERENCES account (user_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+    );
+    
+ 3. INSERT
+   - Table creation
+   
+      CREATE TABLE link(
+      ID serial PRIMARY KEY,
+      url VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      description VARCHAR(255),
+      rel VARCHAR(50)
+       );
+       
+   - Insert values to the table
+   
+     INSERT INTO link(url, name)
+     VALUES
+     ('www.google.com','Google');
+    
+    - Insert Multiple rows
+    
+      INSERT INTO link(url, name)
+      VALUES
+      ('www.bing.com','Bing'),
+      ('www.amazon.com', 'Amazon');
+   
+    - To create copy of table 
+    
+      CREATE TABLE link_copy (LIKE link);
+   
+    - To insert from another table
+    
+      INSERT INTO link_copy 
+      SELECT * FROM link
+      WHERE name = 'Bing';
+   
+  4. Update
+  
+    - Update a column in table
+    
+      UPDATE link
+      SET description = 'Empty Description'
+   
+   - Update using a condition
+   
+     UPDATE link
+     SET description = 'Name starts with A'
+     WHERE name LIKE 'A%'
+   
+   - Update one column using the other
+   
+     UPDATE link
+     SET description = name;
+     
+   - View the affected change
+   
+     UPDATE link
+     SET description = 'New Description'
+     WHERE id = 2
+     RETURNING id,url,name,description;
+   
+   5. Delete 
+   
+      DELETE FROM link
+      WHERE name LIKE 'B%'
+      
+      To view deleted row
+      
+      DELETE FROM link
+      WHERE name LIKE 'A'
+      RETURNING *;
+      
+  6. Drop Table
+     
+     DROP TABLE IF EXISTS link;
+   
+  7. Alter Table
+  
+     - Initial Table creation
+     
+       CREATE TABLE link(
+       link_id serial PRIMARY KEY,
+       title VARCHAR(512) NOT NULL,
+       url VARCHAR(1024) NOT NULL UNIQUE
+       );
+       
+     - Add column
+     
+       ALTER TABLE link ADD COLUMN active boolean;
+       
+     - Drop column
+     
+       ALTER TABLE link DROP COLUMN active
+       
+     - Rename column
+     
+       ALTER TABLE link RENAME COLUMN title TO new_title;
+       
+     - Rename Table
+     
+       ALTER TABLE link RENAME TO url_table;
+       
+  8. Check Constraint
+  
+     CREATE TABLE new(
+     id serial PRIMARY KEY,
+     first_name VARCHAR(50),
+     birth_date DATE CHECK (birth_date > '1900-01-01'),
+     join_date DATE CHECK (join_date > birth_date),
+     salary integer CHECK (salary > 0),
+     );
+  
+     Failing condition
+     
+     INSERT INTO new(first_name, birth_date, join_date, salary)
+     VALUES ('SSS', '1800-01-01', '1999-01-01', '-01');
+
+       
+       
+       
+       
+       
+       
+     
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
